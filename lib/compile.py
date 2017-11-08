@@ -52,7 +52,7 @@ def make(path, filename):
     ]
     commands = '\n'.join(commands)
     commands = commands.format(path, filename, EXT_CXX, EXT_H, EXT_LINK)
-    temp = 'temp_{0}.sh'.format(datetime.now().strftime('%H%M%S')
+    temp = 'temp_{0}.sh'.format(datetime.now().strftime('%H%M%S'))
     with open(temp, 'w') as f:
         f.write(commands)
     call('bash {0}'.format(temp), shell=True)
