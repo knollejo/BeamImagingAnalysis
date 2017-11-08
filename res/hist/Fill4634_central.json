@@ -1,0 +1,19 @@
+{
+    "mintrk": 14,
+    "scaling": 0.00361,
+    "dataname": "Fill4634_rereco_many_medium",
+    "vtxresy": 0.00417,
+    "vtxresx": 0.004188,
+    "nbins": 760,
+    "name": "Fill4634_central",
+    "datapath": "/afs/cern.ch/work/j/joknolle/public/beamimaging",
+    "heavyion": false,
+    "bcids": [
+        644,
+        1215,
+        2269,
+        2389,
+        2589
+    ],
+    "fill": 4634
+}

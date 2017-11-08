@@ -1,0 +1,18 @@
+{
+    "scaling": 0.00492,
+    "dataname": "Fill4954_vdm_rereco_many_medium",
+    "mintrk": 14,
+    "bcids": [
+        41,
+        281,
+        872,
+        1783,
+        2063
+    ],
+    "name": "Fill4954_vdm",
+    "nbins": 760,
+    "vtxresx": 0.003684,
+    "datapath": "/afs/cern.ch/work/j/joknolle/public/beamimaging",
+    "vtxresy": 0.003668,
+    "fill": 4954
+}

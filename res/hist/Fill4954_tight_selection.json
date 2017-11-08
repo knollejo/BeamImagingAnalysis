@@ -1,0 +1,18 @@
+{
+    "scaling": 0.00492,
+    "dataname": "Fill4954_rereco_many_verytight",
+    "mintrk": 24,
+    "bcids": [
+        41,
+        281,
+        872,
+        1783,
+        2063
+    ],
+    "name": "Fill4954_tight_selection",
+    "nbins": 760,
+    "vtxresx": 0.00285,
+    "datapath": "/afs/cern.ch/work/j/joknolle/public/beamimaging",
+    "vtxresy": 0.002839,
+    "fill": 4954
+}

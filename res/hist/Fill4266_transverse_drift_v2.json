@@ -1,0 +1,19 @@
+{
+    "mintrk": 14,
+    "scaling": 0.00509,
+    "dataname": "Fill4266_rereco_many_medium_drift2",
+    "vtxresy": 0.003676,
+    "vtxresx": 0.003687,
+    "nbins": 760,
+    "name": "Fill4266_transverse_drift_v2",
+    "datapath": "/afs/cern.ch/work/j/joknolle/public/beamimaging",
+    "heavyion": false,
+    "bcids": [
+        51,
+        771,
+        1631,
+        2211,
+        2674
+    ],
+    "fill": 4266
+}

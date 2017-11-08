@@ -1,0 +1,18 @@
+{
+    "scaling": 0.000901,
+    "dataname": "Fill5527_vdm_many_medium_nolsc",
+    "mintrk": 14,
+    "bcids": [
+        177,
+        1420,
+        2311,
+        3015
+    ],
+    "name": "Fill5527_vdm_central",
+    "nbins": 760,
+    "vtxresx": 0.002623,
+    "datapath": "/afs/cern.ch/work/j/joknolle/public/beamimaging",
+    "vtxresy": 0.00261,
+    "fill": 5527,
+    "heavyion": true
+}
