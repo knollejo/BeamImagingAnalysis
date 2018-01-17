@@ -294,6 +294,7 @@ def make_summary(names, bcids, models, fill, wip=True):
                     prefix, name, mod.name(), bcid
                 )
                 versions = ['v1']
+                # if mod.name() in ('DG', 'TG', 'SupG'):
                 if mod.name().startswith('Sup'):
                     # versions.append('v2')
                     versions = ['v2']

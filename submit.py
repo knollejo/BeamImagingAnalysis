@@ -6,17 +6,18 @@ from lib.submit import QSubmitter as submit
 
 ma = 'knollejo@mail.desy.de'
 mo = False
-version = 'v1'
 number = 100
 
 # for shapeFitter, computeCorr, integrateResiduals
 switchConfignummodel = False
 configs = [
-    '4266_vdm'
+    '4634_central'
 ]
-models = ['noCorr', 'SG', 'DG', 'TG']
+modelversion = [
+    ('DG', 'v2'), ('TG', 'v2'), ('SupDG', 'v3')
+]
 confignummodel = [
-    ('4634_central', 4, 'TG')
+    ('4634_central', 4, 'TG', 'v1')
 ]
 
 # for closureTest
@@ -25,7 +26,7 @@ toymodels = ['SupDG']
 fitmodels = ['SupDG']
 toyfitmodels = product(toymodels, fitmodels)
 
-def shapeFitter(config, i, model, bcid, json):
+def shapeFitter(config, i, model, bcid, json, version):
     args = [json, str(bcid), model]
     names = ['sF'] + config.split('_') + [str(i), model, version]
     submit(
@@ -33,14 +34,14 @@ def shapeFitter(config, i, model, bcid, json):
         ma=ma, mo=mo, rt=5
     )
 
-def computeCorr(config, i, model, bcid, json):
+def computeCorr(config, i, model, bcid, json, version):
     args = [json, str(bcid), model, version]
     names = ['cC'] + config.split('_') + [str(i), model, version]
     submit(
         'res/jobs/computeCorr.sh', args=args, names=names, ma=ma, mo=mo, rt=3
     )
 
-def integrateResiduals(config, i, model, bcid, json):
+def integrateResiduals(config, i, model, bcid, json, version):
     args = [json, str(bcid), model, version]
     names = ['iR'] + config.split('_') + [str(i), model, version]
     submit(
@@ -51,20 +52,20 @@ def integrateResiduals(config, i, model, bcid, json):
 for arg in argv[1:]:
     if arg in ('shapeFitter', 'computeCorr', 'integrateResiduals'):
         thejob = locals()[arg]
-        if switchConfignummodel:
+        if not switchConfignummodel:
             for config in configs:
                 json = '{0}/res/hist/Fill{1}.json'.format(submit.cwd(), config)
                 with open(json) as f:
                     bcids = load(f)['bcids']
                 for i, bcid in enumerate(bcids):
-                    for model in models:
-                        thejob(config, i, model, bcid, json)
+                    for model, version in modelversion:
+                        thejob(config, i, model, bcid, json, version)
         else:
-            for config, i, model in confignummodel:
+            for config, i, model, version in confignummodel:
                 json = '{0}/res/hist/Fill{1}.json'.format(submit.cwd(), config)
                 with open(json) as f:
                     bcid = load(f)['bcids'][i]
-                thejob(config, i, model, bcid, json)
+                thejob(config, i, model, bcid, json, version)
 
     elif arg.startswith('makeHtml'):
         fill = arg[8:]

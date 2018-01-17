@@ -10,7 +10,8 @@ from lib.prepare import make_histograms, make_vdmhistos
 
 def prepare_histograms(
     configfile, outputpath, suffix, nbins, mintrk, scaling=1.0, verbose=False,
-    stepsize=None, stepsize1Y=None, stepsize2X=None, stepsize2Y=None
+    stepsize=None, stepsize1Y=None, stepsize2X=None, stepsize2Y=None,
+    extracond=None
 ):
     scans = ['1X', '1Y', '2X', '2Y']
     with open(configfile) as f:
@@ -53,7 +54,8 @@ def prepare_histograms(
                 )
             else:
                 hists = make_histograms(
-                    trees, nbins, mintrk, scaling=scaling, verbose=verbose
+                    trees, nbins, mintrk, scaling=scaling, verbose=verbose,
+                    extracond=extracond
                 )
             for hist in hists.itervalues():
                 hist.SetDirectory(0)
@@ -79,6 +81,8 @@ def prepare_histograms(
         'nbins': nbins,
         'heavyion': bool('heavyion' in config and config['heavyion'])
     }
+    if extracond is not None:
+        output['extracond'] = extracond
     filename1 = 'res/hist/{0}.json'.format(output['name'])
     if not exists('res'):
         mkdir('res')
@@ -132,10 +136,17 @@ def main():
     except ValueError:
         raise RuntimeError('Optional 5th argument: scaling (float).')
     suffix = '{0}_{1}'.format(binning, selection)
-    if len(argv) < 7 or not argv[6] or not argv[6] in ('vdm', 'drift'):
+    if len(argv) < 7 or not argv[6] or not argv[6] in ('vdm', 'drift', 'extra'):
         prepare_histograms(
             configfile, outputpath, suffix, nbins, mintrk,
             scaling=scaling, verbose=True
+        )
+    elif argv[6] == 'extra':
+        extracond = 'scanstep>2 && scanstep<16'
+        suffix = '{0}_extra'.format(suffix)
+        prepare_histograms(
+            configfile, outputpath, suffix, nbins, mintrk,
+            scaling=scaling, verbose=True, extracond=extracond
         )
     elif argv[6] == 'vdm':
         if len(argv) < 9 or not argv[7] or not argv[8]:
