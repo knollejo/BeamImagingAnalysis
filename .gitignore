@@ -1,4 +1,6 @@
-results/
+results
 tmp/
-logs/
+logs
 out/
+web/
+*.pyc
