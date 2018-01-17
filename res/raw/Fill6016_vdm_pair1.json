@@ -46,8 +46,8 @@
         1501230731, 1501230769, 1501230809, 1501230847, 1501230886,
         1501230924, 1501230962, 1501231001, 1501231040, 1501231049
     ],
-    "scan2XMoveBegin": [],
-    "scan2XMoveEnd": [],
-    "scan2YMoveBegin": [],
-    "scan2YMoveEnd": []
+    "scan2XMoveBegin": [0],
+    "scan2XMoveEnd": [0],
+    "scan2YMoveBegin": [0],
+    "scan2YMoveEnd": [0]
 }
