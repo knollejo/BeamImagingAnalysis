@@ -5,14 +5,14 @@
     "sourcepath": "/eos/cms/store/group/comm_luminosity/PCC/ForLumiComputation/2017/VdMFills/6016",
     "sourcedirs":
     [
-        "ZeroBias1/crab_CMSSW_9_2_6_ZeroBias1_splitPerBXTrue/170804_183112/0000",
-        "ZeroBias2/crab_CMSSW_9_2_6_ZeroBias2_splitPerBXTrue/170804_183143/0000",
-        "ZeroBias3/crab_CMSSW_9_2_6_ZeroBias3_splitPerBXTrue/170804_183203/0000",
-        "ZeroBias4/crab_CMSSW_9_2_6_ZeroBias4_splitPerBXTrue/170804_183220/0000",
-        "ZeroBias5/crab_CMSSW_9_2_6_ZeroBias5_splitPerBXTrue/170804_183235/0000",
-        "ZeroBias6/crab_CMSSW_9_2_6_ZeroBias6_splitPerBXTrue/170803_140851/0000",
-        "ZeroBias7/crab_CMSSW_9_2_6_ZeroBias7_splitPerBXTrue/170804_183310/0000",
-        "ZeroBias8/crab_CMSSW_9_2_6_ZeroBias8_splitPerBXTrue/170804_183328/0000"
+        "ZeroBias1/crab_CMSSW_9_2_6_ZeroBias1_splitPerBXTrue/180117_161940/0000",
+        "ZeroBias2/crab_CMSSW_9_2_6_ZeroBias2_splitPerBXTrue/180117_162024/0000",
+        "ZeroBias3/crab_CMSSW_9_2_6_ZeroBias3_splitPerBXTrue/180117_162047/0000",
+        "ZeroBias4/crab_CMSSW_9_2_6_ZeroBias4_splitPerBXTrue/180117_162120/0000",
+        "ZeroBias5/crab_CMSSW_9_2_6_ZeroBias5_splitPerBXTrue/180117_162147/0000",
+        "ZeroBias6/crab_CMSSW_9_2_6_ZeroBias6_splitPerBXTrue/180117_162207/0000",
+        "ZeroBias7/crab_CMSSW_9_2_6_ZeroBias7_splitPerBXTrue/180117_162230/0000",
+        "ZeroBias8/crab_CMSSW_9_2_6_ZeroBias8_splitPerBXTrue/180117_162255/0000"
     ],
     "scan1XMoveBegin":
     [
