@@ -49,7 +49,7 @@ def prepare_histograms(
             trees = {}
             for bcid in bcids:
                 treename = 'Beam{0}Move{1}_bunch{2}Add' \
-                           .format(scan[0], scan[1], bcid)
+                           .format(sourcescan[scan][0], sourcescan[scan][1], bcid)
                 trees[bcid] = f.Get(treename)
             if stepsize:
                 hists = make_vdmhistos(
