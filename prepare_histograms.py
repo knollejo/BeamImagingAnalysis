@@ -52,14 +52,13 @@ def prepare_histograms(
                 treename = 'Beam{0}Move{1}_bunch{2}Add' \
                            .format(sourcescan[scan][0], sourcescan[scan][1], bcid)
                 trees[bcid] = f.Get(treename)
+                if singlepair:
+                    trees[bcid].SetName(replace(trees[bcid].GetName(), 'Beam1', 'Beam2'))
             if stepsize:
                 hists = make_vdmhistos(
                     trees, nbins, mintrk, steps[scan],
                     scaling=scaling, crange=crange, verbose=verbose
                 )
-                if singlepair:
-                    hists[2].SetName(replace(hists[2].GetName(), 'Beam1', 'Beam2'))
-                    hists[3].SetName(replace(hists[3].GetName(), 'Beam1', 'Beam2'))
             else:
                 hists = make_histograms(
                     trees, nbins, mintrk, scaling=scaling, verbose=verbose,
