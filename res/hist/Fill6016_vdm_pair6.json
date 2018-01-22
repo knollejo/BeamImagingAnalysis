@@ -5,7 +5,7 @@
     "vtxresy": 0.003304,
     "vtxresx": 0.003082,
     "nbins": 760,
-    "name": "Fill6016_vdm_pair6_many_medium",
+    "name": "Fill6016_vdm_pair6",
     "datapath": "/afs/cern.ch/work/j/joknolle/public/beamimaging",
     "heavyion": false,
     "bcids": [
