@@ -11,9 +11,13 @@ from lib.prepare import make_histograms, make_vdmhistos
 def prepare_histograms(
     configfile, outputpath, suffix, nbins, mintrk, scaling=1.0, verbose=False,
     stepsize=None, stepsize1Y=None, stepsize2X=None, stepsize2Y=None,
-    extracond=None
+    extracond=None, singlepair=False
 ):
     scans = ['1X', '1Y', '2X', '2Y']
+    if singlepair:
+        sourcescan = {'1X':'1X', '1Y':'1Y', '2X':'1X', '2Y':'1Y'}
+    else:
+        sourcescan = {'1X':'1X', '1Y':'1Y', '2X':'2X', '2Y':'2Y'}
     with open(configfile) as f:
         config = load(f)
     fill = config['fill']
@@ -40,7 +44,7 @@ def prepare_histograms(
     else:
         crange = (-10.0, 10.0)
     for scan in scans:
-        filename = '{0}/{1}_{2}.root'.format(outputpath, name, scan)
+        filename = '{0}/{1}_{2}.root'.format(outputpath, name, sourcescan[scan])
         with BareRootFile(filename) as f:
             trees = {}
             for bcid in bcids:
@@ -60,14 +64,15 @@ def prepare_histograms(
             for hist in hists.itervalues():
                 hist.SetDirectory(0)
                 histograms.append(hist)
-            condition = 'vtx_nTrk>={0}'.format(mintrk)
-            errx = TH1F('errx', 'errx', 100, 0.0, 0.03)
-            erry = TH1F('erry', 'erry', 100, 0.0, 0.03)
-            for tree in trees.itervalues():
-                tree.Draw('vtx_xError>>+errx', condition, 'goff')
-                tree.Draw('vtx_yError>>+erry', condition, 'goff')
-            xerror.Add(errx)
-            yerror.Add(erry)
+            if singlepair and not scan.startswith('2'):
+                condition = 'vtx_nTrk>={0}'.format(mintrk)
+                errx = TH1F('errx', 'errx', 100, 0.0, 0.03)
+                erry = TH1F('erry', 'erry', 100, 0.0, 0.03)
+                for tree in trees.itervalues():
+                    tree.Draw('vtx_xError>>+errx', condition, 'goff')
+                    tree.Draw('vtx_yError>>+erry', condition, 'goff')
+                xerror.Add(errx)
+                yerror.Add(erry)
     output = {
         'fill': fill,
         'name': '{0}_{1}'.format(name, suffix),
@@ -136,7 +141,9 @@ def main():
     except ValueError:
         raise RuntimeError('Optional 5th argument: scaling (float).')
     suffix = '{0}_{1}'.format(binning, selection)
-    if len(argv) < 7 or not argv[6] or not argv[6] in ('vdm', 'drift', 'extra'):
+    if len(argv) < 7 or not argv[6] or not argv[6] in (
+        'vdm', 'drift', 'extra', 'singlevdm'
+    ):
         prepare_histograms(
             configfile, outputpath, suffix, nbins, mintrk,
             scaling=scaling, verbose=True
@@ -158,6 +165,17 @@ def main():
         prepare_histograms(
             configfile, outputpath, suffix, nbins, mintrk,
             scaling=scaling, verbose=True, stepsize=stepsize
+        )
+    elif argv[6] == 'singlevdm':
+        if len(argv) < 9 or not argv[7] or not argv[8]:
+            raise RuntimeError('Specify 7th, 8th argument: VdM scan step size.')
+        try:
+            stepsize = float(argv[7]), float(argv[8])
+        except ValueError:
+            raise RuntimeError('Specify 7th, 8th argument: VdM scan step size.')
+        prepare_histograms(
+            configfile, outputpath, suffix, nbins, mintrk,
+            scaling=scaling, verbose=True, stepsize=stepsize, singlepair=True
         )
     else:
         if (
