@@ -107,7 +107,8 @@ def prepare_histograms(
             ('stepsize2X', stepsize2X), ('stepsize2Y', stepsize2Y)
         ):
             if v is not None:
-                NamedFloat(n, v).Write()
+                NamedFloat(n+'_x', v[0]).Write()
+                NamedFloat(n+'_y', v[1]).Write()
         NamedString('name', output['name']).Write()
     return filename2
 
