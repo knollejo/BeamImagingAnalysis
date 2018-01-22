@@ -1,6 +1,7 @@
 from json import dump, load
 from os import mkdir
 from os.path import exists
+from string import replace
 from sys import argv
 
 from ROOT import TH1F
@@ -56,6 +57,9 @@ def prepare_histograms(
                     trees, nbins, mintrk, steps[scan],
                     scaling=scaling, crange=crange, verbose=verbose
                 )
+                if singlepair:
+                    hists[2].SetName(replace(hists[2].GetName(), 'Beam1', 'Beam2'))
+                    hists[3].SetName(replace(hists[3].GetName(), 'Beam1', 'Beam2'))
             else:
                 hists = make_histograms(
                     trees, nbins, mintrk, scaling=scaling, verbose=verbose,
