@@ -1,0 +1,19 @@
+{
+    "mintrk": 14,
+    "scaling": 0.00492,
+    "dataname": "Fill6016_vdm_pair5_many_medium",
+    "vtxresy": 0.003308,
+    "vtxresx": 0.003085,
+    "nbins": 760,
+    "name": "Fill6016_vdm_pair5_many_medium",
+    "datapath": "/afs/cern.ch/work/j/joknolle/public/beamimaging",
+    "heavyion": false,
+    "bcids": [
+        41,
+        281,
+        872,
+        1783,
+        2063
+    ],
+    "fill": 6016
+}
