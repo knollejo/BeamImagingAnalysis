@@ -11,10 +11,10 @@ number = 100
 # for shapeFitter, computeCorr, integrateResiduals
 switchConfignummodel = False
 configs = [
-    '4634_central'
+    '6016_vdm_pair1', '6016_vdm_pair2', '6016_vdm_pair5', '6016_vdm_pair6'
 ]
 modelversion = [
-    ('DG', 'v2'), ('TG', 'v2'), ('SupDG', 'v3')
+    ('DG', 'v1')
 ]
 confignummodel = [
     ('4634_central', 4, 'TG', 'v1')
