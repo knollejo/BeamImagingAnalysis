@@ -115,19 +115,26 @@ def make_trees(
             trees[bcid].Fill()
     return trees
 
-def make_histograms(trees, nbins, mintrk, scaling=1.0, verbose=False):
+def make_histograms(
+    trees, nbins, mintrk, scaling=1.0, verbose=False, extracond=None
+):
     """Run over created trees and select Beam Imaging data for histograms.
 
     trees: Dictionary of trees to be used for histogram creation (key unused).
     nbins: Number of bins in each dimension.
     mintrk: Minimal number of tracks (int) for the event selection.
     scaling: Float by which the histograms are rescaled (x=xraw/scaling).
+    extracond: Additional condition to be applied to selected data.
     returns dictionary with histograms.
     """
+    if extracond is None:
+        extracond = ''
+    else:
+        extracond = ' && ({0})'.format(extracond)
     hists = {}
     for i, tree in enumerate(trees.itervalues()):
         name = 'hist_{0}'.format(tree.GetName())
-        condition = 'vtx_nTrk>={0}'.format(mintrk)
+        condition = 'vtx_nTrk>={0}{1}'.format(mintrk, extracond)
 
         draw1 = 'vtx_y/{0}:vtx_x/{0}>>hnew{1}'.format(scaling, i)
         n = tree.Draw(draw1, condition, 'goff')
