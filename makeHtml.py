@@ -162,7 +162,7 @@ def get_summary(summary, f, model):
     except NameError:
         return (float('nan'), float('nan'))
 
-def make_plots(names, bcid, models, fill, version=1, wip=True):
+def make_plots(names, bcid, models, fill, version=1, wip=False):
     prefix = names[0][:names[0].index('_')]
     names = [name[len(prefix)+1:] for name in names]
     # if version > 1:
