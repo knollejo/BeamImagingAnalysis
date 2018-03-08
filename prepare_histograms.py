@@ -67,7 +67,7 @@ def prepare_histograms(
             for hist in hists.itervalues():
                 hist.SetDirectory(0)
                 histograms.append(hist)
-            if singlepair and not scan.startswith('2'):
+            if not singlepair or not scan.startswith('2'):
                 condition = 'vtx_nTrk>={0}'.format(mintrk)
                 errx = TH1F('errx', 'errx', 100, 0.0, 0.03)
                 erry = TH1F('erry', 'erry', 100, 0.0, 0.03)
