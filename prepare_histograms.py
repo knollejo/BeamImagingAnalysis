@@ -128,16 +128,17 @@ def main():
         raise RuntimeError('Specify 3rd argument: Bins (many, some, or few).')
     binning = argv[3]
     nbins = {'many': 760, 'some': 190, 'few': 95}[binning]
-    if len(argv) < 5 or not argv[4] or argv[4] not in ['l', 'm', 't', 'vt']:
+    if len(argv) < 5 or not argv[4] or argv[4] not in ['l', 'm', 't', 'vt', 'et']:
         raise RuntimeError(
-            'Specify 4th argument: Track selection (l, m, t, vt).'
+            'Specify 4th argument: Track selection (l, m, t, vt, et).'
         )
     selection = {
-        'l': 'loose', 'm': 'medium', 't': 'tight', 'vt': 'verytight'
+        'l': 'loose', 'm': 'medium', 't': 'tight', 'vt': 'verytight',
+        'et': 'extratight'
     }[argv[4]]
     mintrk = {
-        'loose': 10, 'medium': 14, 'tight': 18, 'verytight': 24
-    }[selection]
+        'l': 10, 'm': 14, 't': 18, 'vt': 24, 'et': 50
+    }[argv[4]]
     if len(argv) < 6 or not argv[5]:
         raise RuntimeError('Specify 5th argument: scaling (float).')
     try:
