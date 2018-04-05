@@ -1,0 +1,18 @@
+{
+    "mintrk": 24,
+    "scaling": 0.000901,
+    "dataname": "Fill5563_vdm_many_verytight",
+    "vtxresy": 0.002245,
+    "vtxresx": 0.002256,
+    "nbins": 760,
+    "name": "Fill5563_vdm_verytight",
+    "datapath": "/afs/cern.ch/work/j/joknolle/public/beamimaging",
+    "heavyion": true,
+    "bcids": [
+        958,
+        1486,
+        2032,
+        2576
+    ],
+    "fill": 5563
+}
