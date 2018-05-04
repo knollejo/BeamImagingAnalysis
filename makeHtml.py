@@ -236,8 +236,9 @@ def make_plots(names, bcid, models, fill, version=1, wip=False):
                 plot.SaveAs('{0}/{1}.pdf'.format(path, plotname))
                 plot.Close()
                 plot = CombinedResidualPlot(
-                    hdat, hmod, nbins=50, maxr=0.04, fill=fill,
-                    workinprogress=wip
+                    hdat, hmod, nbins=50,
+                    maxr=0.012 if fill in (5527, 5563) else 0.04,
+                    fill=fill, workinprogress=wip
                 )
                 plot._y1range = (-1.9, 1.9)
                 plot._y2range = (-0.59, 0.59)
