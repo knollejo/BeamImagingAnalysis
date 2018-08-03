@@ -11,13 +11,15 @@ number = 100
 # for shapeFitter, computeCorr, integrateResiduals
 switchConfignummodel = False
 configs = [
-    '6016_vdm_pair1', '6016_vdm_pair2', '6016_vdm_pair5', '6016_vdm_pair6'
+    '5563_vdm_verytight', '5563_vdm_extratight',
+    '5527_vdm_verytight', '5527_vdm_extratight',
 ]
 modelversion = [
-    ('DG', 'v1')
+    ('SG', 'v1'), ('noCorr', 'v1'), #('DG', 'v1'), ('SupDG', 'v3'), ('SupG', 'v2'), ('TG', 'v1')
 ]
 confignummodel = [
-    ('4634_central', 4, 'TG', 'v1')
+    # ('5527_vdm_verytight', 3, 'TG', 'v1')
+    ('5527_vdm_extratight', 3, 'SupG', 'v2')
 ]
 
 # for closureTest
@@ -82,7 +84,9 @@ for arg in argv[1:]:
                 bcids = load(f)['bcids']
             for i, bcid in enumerate(bcids):
                 mymo = mo
-                for model in models:
+                for model, version in modelversion:
+                    if version != 'v3':
+                        continue
                     for j in range(number):
                         if j == 5:
                             mymo = False
