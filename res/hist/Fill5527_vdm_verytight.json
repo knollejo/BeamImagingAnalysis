@@ -1,11 +1,11 @@
 {
-    "mintrk": 14,
+    "mintrk": 24,
     "scaling": 0.000901,
-    "dataname": "Fill5527_vdm_alt_many_medium_nolsc",
-    "vtxresy": 0.00261,
-    "vtxresx": 0.002623,
+    "dataname": "Fill5527_vdm_many_verytight",
+    "vtxresy": 0.002241,
+    "vtxresx": 0.002253,
     "nbins": 760,
-    "name": "Fill5527_vdm_alt_nolsc",
+    "name": "Fill5527_vdm_verytight",
     "datapath": "/afs/cern.ch/work/j/joknolle/public/beamimaging",
     "heavyion": true,
     "bcids": [

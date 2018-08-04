@@ -115,7 +115,9 @@ class PlotBase(TCanvas):
                 theyear = 2017
             if self.fill <= 4647 and self.fill >=4634:
                 theenergy = '5.02 TeV'
-            elif self.fill <= 5575 and self.fill >= 5505:
+            elif self.fill < 5563 and self.fill >= 5505:
+                theenergy = 'Pbp, 8.16 TeV'
+            elif self.fill <= 5575 and self.fill >=5563:
                 theenergy = 'pPb, 8.16 TeV'
             else:
                 theenergy = '13 TeV'
