@@ -14,10 +14,14 @@ def prepare_filelist(configfile, verbose=False):
     fill = config['fill']
     version = config['version']
     times = {
-        '1X': (config['scan1XMoveBegin'][0], config['scan1XMoveEnd'][-1]),
-        '1Y': (config['scan1YMoveBegin'][0], config['scan1YMoveEnd'][-1]),
-        '2X': (config['scan2XMoveBegin'][0], config['scan2XMoveEnd'][-1]),
-        '2Y': (config['scan2YMoveBegin'][0], config['scan2YMoveEnd'][-1])
+        '1X': (config.get('scan1XMoveBegin_Early', config['scan1XMoveBegin'])[0], \
+               config.get('scan1XMoveEnd_Late', config['scan1XMoveEnd'])[-1]),
+        '1Y': (config.get('scan1YMoveBegin_Early', config['scan1YMoveBegin'])[0], \
+               config.get('scan1YMoveEnd_Late', config['scan1YMoveEnd'])[-1]),
+        '2X': (config.get('scan2XMoveBegin_Early', config['scan2XMoveBegin'])[0], \
+               config.get('scan2XMoveEnd_Late', config['scan2XMoveEnd'])[-1]),
+        '2Y': (config.get('scan2YMoveBegin_Early', config['scan2YMoveBegin'])[0], \
+               config.get('scan2YMoveEnd_Late', config['scan2YMoveEnd'])[-1])
     }
     filelist = make_filelist(directories, times, verbose=verbose)
     output = {
