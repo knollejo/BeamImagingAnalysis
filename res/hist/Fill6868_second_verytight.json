@@ -1,0 +1,19 @@
+{
+    "mintrk": 24,
+    "scaling": 0.00492,
+    "dataname": "Fill6868_second_many_verytight",
+    "vtxresy": 0.002086,
+    "vtxresx": 0.002023,
+    "nbins": 760,
+    "name": "Fill6868_second_many_verytight",
+    "datapath": "/afs/cern.ch/work/j/joknolle/public/beamimaging",
+    "heavyion": false,
+    "bcids": [
+        265,
+        865,
+        1780,
+        2192,
+        3380
+    ],
+    "fill": 6868
+}
