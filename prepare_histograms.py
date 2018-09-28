@@ -147,7 +147,7 @@ def main():
         raise RuntimeError('Optional 5th argument: scaling (float).')
     suffix = '{0}_{1}'.format(binning, selection)
     if len(argv) < 7 or not argv[6] or not argv[6] in (
-        'vdm', 'drift', 'extra', 'singlevdm'
+        'vdm', 'drift', 'extra', 'singlevdm', 'mixed',
     ):
         prepare_histograms(
             configfile, outputpath, suffix, nbins, mintrk,
@@ -182,7 +182,7 @@ def main():
             configfile, outputpath, suffix, nbins, mintrk,
             scaling=scaling, verbose=True, stepsize=stepsize, singlepair=True
         )
-    else:
+    else: # 'drift', 'mixed'
         if (
             len(argv) < 15 or not argv[7] or not argv[8] or not argv[9]
             or not argv[10] or not argv[11] or not argv[12] or not argv[13]
@@ -196,7 +196,7 @@ def main():
             stepsize2Y = float(argv[13]), float(argv[14])
         except:
             raise RuntimeError('Specify 7th to 14th argument: Scan step sizes.')
-        suffix = '{0}_drift'.format(suffix)
+        suffix = '_'.join((suffix, argv[6]))
         prepare_histograms(
             configfile, outputpath, suffix, nbins, mintrk, scaling=scaling,
             verbose=True, stepsize=stepsize, stepsize1Y=stepsize1Y,
