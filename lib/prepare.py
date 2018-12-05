@@ -87,9 +87,12 @@ def make_trees(
     for event in chain.events(verbose):
         if event['nVtx'] <= 0:
             continue
-        bcid = event['bunchCrossing']
-        if bcid not in bcids:
-            continue
+        if -1 not in bcids:
+            bcid = event['bunchCrossing']
+            if bcid not in bcids:
+                continue
+        else:
+            bcid = -1
         for scanstep, (begin, end) in enumerate(times):
             if event['timeStamp_begin'] <= begin:
                 continue

@@ -99,7 +99,7 @@ class QSubmitter(JobSubmitter):
     """Class for job submission on DESY-NAF."""
 
     def sub(self):
-        return 'qsub'
+        return 'condor_qsub'
 
     def output(self, output):
         return '-j y -o {0}'.format(output)

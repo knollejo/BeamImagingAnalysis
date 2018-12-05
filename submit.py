@@ -11,15 +11,19 @@ number = 100
 # for shapeFitter, computeCorr, integrateResiduals
 switchConfignummodel = False
 configs = [
-    '5563_vdm_verytight', '5563_vdm_extratight',
-    '5527_vdm_verytight', '5527_vdm_extratight',
+    # '6868_second_verytight',
+    # '6868_second_extratight',
+    '6868_first',
 ]
 modelversion = [
-    ('SG', 'v1'), ('noCorr', 'v1'), #('DG', 'v1'), ('SupDG', 'v3'), ('SupG', 'v2'), ('TG', 'v1')
+    ('SupDG', 'v4'),
+    ('SupDG', 'v3'),
+    ('SupG', 'v2'),
+    ('SG', 'v1'), ('noCorr', 'v1'), ('DG', 'v1'), ('TG', 'v1'),
 ]
 confignummodel = [
-    # ('5527_vdm_verytight', 3, 'TG', 'v1')
-    ('5527_vdm_extratight', 3, 'SupG', 'v2')
+    ('6868_second', 2, 'TG', 'v1'),
+    #('6868_second', 4, 'TG', 'v1'),
 ]
 
 # for closureTest
@@ -77,7 +81,7 @@ for arg in argv[1:]:
             rt=1
         )
 
-    elif arg == 'shapeFitter_v3':
+    elif arg in ('shapeFitter_v3', 'shapeFitter_v4'):
         for config in configs:
             json = '{0}/res/hist/Fill{1}.json'.format(submit.cwd(), config)
             with open(json) as f:
@@ -85,7 +89,7 @@ for arg in argv[1:]:
             for i, bcid in enumerate(bcids):
                 mymo = mo
                 for model, version in modelversion:
-                    if version != 'v3':
+                    if version != arg[-2:]:
                         continue
                     for j in range(number):
                         if j == 5:
@@ -95,7 +99,7 @@ for arg in argv[1:]:
                             str(i), model
                         ]
                         submit(
-                            'res/jobs/shapeFitter_v3.sh', args=args,
+                            'res/jobs/{0}.sh'.format(arg), args=args,
                             names=names, ma=ma, mo=mymo, rt=5
                         )
 

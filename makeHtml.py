@@ -33,6 +33,7 @@ longnames = {
 }
 
 v3 = True
+v4 = False
 
 colors = (1, 46, 8, 9, 42, 38, 30)
 
@@ -193,7 +194,7 @@ def make_plots(names, bcid, models, fill, version=1, wip=False):
             'fits': {f: {} for f in mod.fit_parameters}
         }
         for name in names:
-            if version == 3:
+            if version in (3, 4):
                 extra = '_best'
             else:
                 extra = ''
@@ -302,9 +303,11 @@ def make_summary(names, bcids, models, fill, wip=True):
                 if v3 and mod.name() == 'SupDG':
                     # versions.append('v3')
                     versions = ['v3']
+                elif v4 and mod.name() == 'SupDG':
+                    versions = ['v4']
                 bestchisq = 1.0e9
                 for version in versions:
-                    if version == 'v3':
+                    if version in ('v3', 'v4'):
                         extra = '_best'
                     else:
                         extra = ''

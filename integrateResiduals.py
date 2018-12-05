@@ -82,13 +82,13 @@ def main():
         'SupG': SuperGaussFit, 'SupDG': SuperDoubleGaussFit,
         'noCorr': SingleGaussUncorrelated
     }[argv[3]](crange=crange)
-    if len(argv) < 5 or not argv[4] or argv[4] not in ['v2', 'v3']:
+    if len(argv) < 5 or not argv[4] or argv[4] not in ['v2', 'v3', 'v4']:
         version = 'v1'
     else:
         version = argv[4]
     datafile = '{0}/{1}.root'.format(config['datapath'], config['dataname'])
     name = config['name']
-    if version == 'v3':
+    if version in ('v3', 'v4'):
         name = '{0}_best'.format(name)
     outputname = 'BeamImaging_{0}_{1}_{2}_bcid{3}' \
                  .format(version, name, model.name(), bcid)
