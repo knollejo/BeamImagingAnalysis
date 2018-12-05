@@ -6,7 +6,13 @@ from sys import argv
 from lib.io import BareRootFile, NamedString, Timestamp
 from lib.prepare import make_trees
 
-def prepare_trees(configfile, outputpath, mintrk=0, verbose=False, scans=None):
+# qualities = ('vtx_isGood', '!vtx_isFake')
+qualities = ('goodVertex', 'vtx_isValid', '!vtx_isFake')
+
+def prepare_trees(
+    configfile, outputpath, mintrk=0, verbose=False, scans=None,
+    noerror=False
+):
     if scans is None:
         scans = ('1X', '1Y', '2X', '2Y')
     with open(configfile) as f:
@@ -21,7 +27,7 @@ def prepare_trees(configfile, outputpath, mintrk=0, verbose=False, scans=None):
         begin = config['scan{0}MoveBegin'.format(scan)]
         end = config['scan{0}MoveEnd'.format(scan)]
         times = zip(begin, end)
-        trees = make_trees(filelist, times, bcids, mintrk, verbose)
+        trees = make_trees(filelist, times, bcids, mintrk, verbose, noerror, qualities)
         filename = '{0}/{1}_{2}.root'.format(outputpath, name, scan)
         with BareRootFile(filename, 'RECREATE') as f:
             for tree in trees.itervalues():
@@ -44,9 +50,14 @@ def main():
         outputpath = outputpath[:-1]
     if len(argv) < 4 or not argv[3] or argv[3] not in ('1X', '1Y', '2X', '2Y'):
         scans = None
+        noerror = len(argv)>3 and argv[3] and argv[3].upper() == 'NOERROR'
     else:
         scans = [scan for scan in argv[3:] if scan in ('1X', '1Y', '2X', '2Y')]
-    prepare_trees(configfile, outputpath, mintrk=6, verbose=True, scans=scans)
+        noerror = 'NOERROR' in map(str.upper, argv[3:])
+    prepare_trees(
+        configfile, outputpath, mintrk=6, verbose=True, scans=scans,
+        noerror=noerror
+    )
 
 if __name__ == '__main__':
     main()

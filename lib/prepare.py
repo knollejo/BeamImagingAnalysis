@@ -50,7 +50,8 @@ def make_filelist(
     return filelist
 
 def make_trees(
-    filelist, times, bcids, mintrk=0, verbose=True
+    filelist, times, bcids, mintrk=0, verbose=True, noerror=False,
+    qualities=None
 ):
     """Run over raw data and collect Beam Imaging data in trees.
 
@@ -59,22 +60,30 @@ def make_trees(
     bcids: List of bunch crossings (int).
     mintrk: Minimal number of tracks (int) for the event selection (default: 0).
     verbose: Set true to print progress to stdout.
+    noerror: Set true to not compute resolutions.
+    qualities: tuple of boolean fields that are required.
     returns list of ROOT trees.
     """
     chain = RootChain('lumi/tree')
     chain.add_files(filelist)
     chain.add_fields([
-        ('bunchCrossing', 'i', 1),
         ('nVtx', 'i', 1),
         ('vtx_nTrk', 'i', 200),
         ('vtx_x', 'f', 200),
         ('vtx_y', 'f', 200),
-        ('vtx_xError', 'f', 200),
-        ('vtx_yError', 'f', 200),
-        ('vtx_isGood', 'b', 200),
-        ('vtx_isFake', 'b', 200),
         ('timeStamp_begin', 'I', 1)
     ])
+    if -1 not in bcids:
+        chain.add_fields([('bunchCrossing', 'i', 1),])
+    if not noerror:
+        chain.add_fields([
+            ('vtx_xError', 'f', 200),
+            ('vtx_yError', 'f', 200),
+        ])
+    if qualities is None:
+        qualities = ('vtx_isGood', '!vtx_isFake')
+    for quality in qualities:
+        chain.add_fields([(quality if quality[0]!='!' else quality[1:], 'b', 200),])
     trees = {b: RootTree('bunch{0}Add'.format(b)) for b in bcids}
     for tree in trees.itervalues():
         tree.branch_f('vtx_x')
@@ -104,16 +113,19 @@ def make_trees(
         trees[bcid].set('scanstep', scanstep)
         trees[bcid].set('timestamp', event['timeStamp_begin'])
         for vtx in range(event['nVtx']):
-            if not event['vtx_isGood'][vtx]:
-                continue
-            if event['vtx_isFake'][vtx]:
-                continue
+            for quality in qualities:
+                if quality[0]!='!':
+                    if not event[quality][vtx]:
+                        continue
+                else:
+                    if event[quality[1:]][vtx]:
+                        continue
             if event['vtx_nTrk'][vtx] < mintrk:
                 continue
             trees[bcid].set('vtx_x', event['vtx_x'][vtx])
             trees[bcid].set('vtx_y', event['vtx_y'][vtx])
-            trees[bcid].set('vtx_xError', event['vtx_xError'][vtx])
-            trees[bcid].set('vtx_yError', event['vtx_yError'][vtx])
+            trees[bcid].set('vtx_xError', 0.0 if noerror else event['vtx_xError'][vtx])
+            trees[bcid].set('vtx_yError', 0.0 if noerror else event['vtx_yError'][vtx])
             trees[bcid].set('vtx_nTrk', event['vtx_nTrk'][vtx])
             trees[bcid].Fill()
     return trees
