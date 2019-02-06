@@ -2,7 +2,7 @@
     "fill": 4689,
     "version": "vdm",
     "heavyion": true,
-    "bcids": [-1],
+    "bcids": [0],
     "sourcepath": "/eos/cms/store/group/comm_luminosity/PCC/ForLumiComputation/2015/NormalFills/4689",
     "sourcedirs":
     [

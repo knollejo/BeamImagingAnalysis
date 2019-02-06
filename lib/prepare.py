@@ -73,7 +73,7 @@ def make_trees(
         ('vtx_y', 'f', 200),
         ('timeStamp_begin', 'I', 1)
     ])
-    if -1 not in bcids:
+    if 0 not in bcids:
         chain.add_fields([('bunchCrossing', 'i', 1),])
     if not noerror:
         chain.add_fields([

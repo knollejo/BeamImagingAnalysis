@@ -6,8 +6,8 @@ from sys import argv
 from lib.io import BareRootFile, NamedString, Timestamp
 from lib.prepare import make_trees
 
-# qualities = ('vtx_isGood', '!vtx_isFake')
-qualities = ('goodVertex', 'vtx_isValid', '!vtx_isFake')
+qualities = ('vtx_isGood', '!vtx_isFake')
+# qualities = ('goodVertex', 'vtx_isValid', '!vtx_isFake')
 
 def prepare_trees(
     configfile, outputpath, mintrk=0, verbose=False, scans=None,
