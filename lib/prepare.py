@@ -188,11 +188,11 @@ def make_vdmhistos(
         condition = 'vtx_nTrk>={0}'.format(mintrk)#' && scanstep>=2'
 
         if 'MoveX' in name:
-            draw1 = '(vtx_y)/{0}:(vtx_x{1:+f}*scanstep)/{0}>>hnew{2}' \
-                    .format(scaling, -1.0*stepsize[0], i)
+            draw1 = '(vtx_y{2:+f}*scanstep)/{0}:(vtx_x{1:+f}*scanstep)/{0}>>hnew{3}' \
+                    .format(scaling, -1.0*stepsize[0], -1.0*stepsize[1], i)
         else:
-            draw1 = '(vtx_y{0:+f}*scanstep)/{1}:(vtx_x)/{1}>>hnew{2}' \
-                    .format(-1.0*stepsize[1], scaling, i)
+            draw1 = '(vtx_y{2:+f}*scanstep)/{0}:(vtx_x{1:+f}*scanstep)/{0}>>hnew{3}' \
+                    .format(scaling, -1.0*stepsize[0], -1.0*stepsize[1], i)
         n = tree.Draw(draw1, condition, 'goff')
         hist1 = gDirectory.Get('hnew{0}'.format(i))
 
