@@ -1,10 +1,10 @@
 from json import dump, load
-from os import mkdir
+from os import listdir, mkdir
 from os.path import exists
 from string import replace
 from sys import argv
 
-from ROOT import TH1F
+from ROOT import TChain, TH1F
 
 from lib.io import BareRootFile, NamedFloat, NamedString, Timestamp
 from lib.prepare import make_histograms, make_vdmhistos
@@ -46,36 +46,38 @@ def prepare_histograms(
         crange = (-10.0, 10.0)
     for scan in scans:
         filename = '{0}/{1}_{2}.root'.format(outputpath, name, sourcescan[scan])
-        with BareRootFile(filename) as f:
-            trees = {}
-            for bcid in bcids:
-                treename = 'Beam{0}Move{1}_bunch{2}Add' \
-                           .format(sourcescan[scan][0], sourcescan[scan][1], bcid)
-                trees[bcid] = f.Get(treename)
-                if singlepair and scan != sourcescan[scan]:
-                    trees[bcid].SetName(replace(trees[bcid].GetName(), 'Beam1', 'Beam2'))
-            if stepsize:
-                hists = make_vdmhistos(
-                    trees, nbins, mintrk, steps[scan],
-                    scaling=scaling, crange=crange, verbose=verbose
-                )
-            else:
-                hists = make_histograms(
-                    trees, nbins, mintrk, scaling=scaling, verbose=verbose,
-                    extracond=extracond
-                )
-            for hist in hists.itervalues():
-                hist.SetDirectory(0)
-                histograms.append(hist)
-            if not singlepair or not scan.startswith('2'):
-                condition = 'vtx_nTrk>={0}'.format(mintrk)
-                errx = TH1F('errx', 'errx', 100, 0.0, 0.03)
-                erry = TH1F('erry', 'erry', 100, 0.0, 0.03)
-                for tree in trees.itervalues():
-                    tree.Draw('vtx_xError>>+errx', condition, 'goff')
-                    tree.Draw('vtx_yError>>+erry', condition, 'goff')
-                xerror.Add(errx)
-                yerror.Add(erry)
+        if not exists(filename):
+            filename = '{0}/{1}_{2}_file*.root'.format(outputpath, name, sourcescan[scan])
+        trees = {}
+        for bcid in bcids:
+            treename = 'Beam{0}Move{1}_bunch{2}Add' \
+                       .format(sourcescan[scan][0], sourcescan[scan][1], bcid)
+            trees[bcid] = TChain(treename)
+            trees[bcid].Add(filename)
+            if singlepair and scan != sourcescan[scan]:
+                trees[bcid].SetName(replace(trees[bcid].GetName(), 'Beam1', 'Beam2'))
+        if stepsize:
+            hists = make_vdmhistos(
+                trees, nbins, mintrk, steps[scan],
+                scaling=scaling, crange=crange, verbose=verbose
+            )
+        else:
+            hists = make_histograms(
+                trees, nbins, mintrk, scaling=scaling, verbose=verbose,
+                extracond=extracond
+            )
+        for hist in hists.itervalues():
+            hist.SetDirectory(0)
+            histograms.append(hist)
+        if not singlepair or not scan.startswith('2'):
+            condition = 'vtx_nTrk>={0}'.format(mintrk)
+            errx = TH1F('errx', 'errx', 100, 0.0, 0.03)
+            erry = TH1F('erry', 'erry', 100, 0.0, 0.03)
+            for tree in trees.itervalues():
+                tree.Draw('vtx_xError>>+errx', condition, 'goff')
+                tree.Draw('vtx_yError>>+erry', condition, 'goff')
+            xerror.Add(errx)
+            yerror.Add(erry)
     output = {
         'fill': fill,
         'name': '{0}_{1}'.format(name, suffix),

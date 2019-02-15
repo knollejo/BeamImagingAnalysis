@@ -1,0 +1,19 @@
+{
+    "mintrk": 14,
+    "scaling": 0.00492,
+    "dataname": "Fill6868_rereco_second_many_medium",
+    "vtxresy": 0.002639,
+    "vtxresx": 0.002574,
+    "nbins": 760,
+    "name": "Fill6868_rereco_second",
+    "datapath": "/afs/cern.ch/work/j/joknolle/public/beamimaging",
+    "heavyion": false,
+    "bcids": [
+        265,
+        865,
+        1780,
+        2192,
+        3380
+    ],
+    "fill": 6868
+}

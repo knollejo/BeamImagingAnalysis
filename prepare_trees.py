@@ -11,7 +11,7 @@ qualities = ('vtx_isGood', '!vtx_isFake')
 
 def prepare_trees(
     configfile, outputpath, mintrk=0, verbose=False, scans=None,
-    noerror=False
+    noerror=False, start=None
 ):
     if scans is None:
         scans = ('1X', '1Y', '2X', '2Y')
@@ -23,21 +23,28 @@ def prepare_trees(
     name = 'Fill{0}_{1}'.format(fill, version)
     for scan in scans:
         print '<<< Prepare scan files: {0}'.format(scan)
-        filelist = config['scan{0}MoveFiles'.format(scan)]
+        basefilelist = config['scan{0}MoveFiles'.format(scan)]
         begin = config['scan{0}MoveBegin'.format(scan)]
         end = config['scan{0}MoveEnd'.format(scan)]
         times = zip(begin, end)
-        trees = make_trees(filelist, times, bcids, mintrk, verbose, noerror, qualities)
-        filename = '{0}/{1}_{2}.root'.format(outputpath, name, scan)
-        with BareRootFile(filename, 'RECREATE') as f:
-            for tree in trees.itervalues():
-                nam = tree.GetName()
-                treename = 'Beam{0}Move{1}_{2}'.format(scan[0], scan[1], nam)
-                tree.SetName(treename)
-                tree.Write(treename)
-            Timestamp().Write()
-            NamedString('name', name).Write()
-            NamedString('scan', scan).Write()
+        if start is None:
+            filelists = (('{0}/{1}_{2}.root'.format(outputpath, name, scan), basefilelist),)
+        else:
+            filelists = map(lambda (i, f): (
+                '{0}/{1}_{2}_file{3}.root'.format(outputpath, name, scan, i), (f,)
+            ), enumerate(basefilelist[start:], start=start))
+        for i, (filename, filelist) in enumerate(filelists):
+            print '<<< Now at filelist {0} of {1}'.format((0 if start is None else start)+i, len(filelists))
+            trees = make_trees(filelist, times, bcids, mintrk, verbose, noerror, qualities)
+            with BareRootFile(filename, 'RECREATE') as f:
+                for tree in trees.itervalues():
+                    nam = tree.GetName()
+                    treename = 'Beam{0}Move{1}_{2}'.format(scan[0], scan[1], nam)
+                    tree.SetName(treename)
+                    tree.Write(treename)
+                Timestamp().Write()
+                NamedString('name', name).Write()
+                NamedString('scan', scan).Write()
 
 def main():
     if len(argv) < 2 or not argv[1] or not exists(argv[1]):
@@ -48,15 +55,23 @@ def main():
     outputpath = argv[2]
     if outputpath.endswith('/'):
         outputpath = outputpath[:-1]
-    if len(argv) < 4 or not argv[3] or argv[3] not in ('1X', '1Y', '2X', '2Y'):
+    args = filter(lambda a: not a.startswith('-'), argv[3:])
+    opts = map(lambda o: str.upper(o[1:]), filter(lambda a: a.startswith('-'), argv[3:]))
+    if len(args)==0 or not args[0] or args[0] not in ('1X', '1Y', '2X', '2Y'):
         scans = None
-        noerror = len(argv)>3 and argv[3] and argv[3].upper() == 'NOERROR'
     else:
-        scans = [scan for scan in argv[3:] if scan in ('1X', '1Y', '2X', '2Y')]
-        noerror = 'NOERROR' in map(str.upper, argv[3:])
+        scans = filter(lambda scan: scan in ('1X', '1Y', '2X', '2Y'), args)
+    noerror = 'NOERROR' in opts
+    if filter(lambda o: o.startswith('S'), opts):
+        try:
+            start = int(filter(lambda o: o.startswith('S'), opts)[0][1:])
+        except ValueError:
+            raise RuntimeError('Usage: -s3 to start at 4th file.')
+    else:
+        start = None
     prepare_trees(
         configfile, outputpath, mintrk=6, verbose=True, scans=scans,
-        noerror=noerror
+        noerror=noerror, start=start
     )
 
 if __name__ == '__main__':
