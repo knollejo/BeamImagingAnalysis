@@ -217,11 +217,11 @@ def make_plots(names, bcid, models, fill, version=1, wip=False):
                     hres.SetDirectory(0)
                     hdat.SetDirectory(0)
                     hmod.SetDirectory(0)
-                chisq = [
+                chisq = [(
+                    -1.0 if f.get('dof{0}'.format(c)).GetVal()==0 else
                     f.get('chisq{0}'.format(c)).GetVal()
                     / f.get('dof{0}'.format(c)).GetVal()
-                    for c in ('X1', 'Y1', 'X2', 'Y2')
-                ]
+                ) for c in ('X1', 'Y1', 'X2', 'Y2')]
             for (hres, hdat, hmod), csq in zip(reshists, chisq):
                 c = hres.GetName()[-2:]
                 plot = ResidualPlot(hres, fill=fill, workinprogress=wip)

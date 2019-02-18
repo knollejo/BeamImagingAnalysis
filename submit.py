@@ -6,14 +6,16 @@ from lib.submit import QSubmitter as submit
 
 ma = 'knollejo@mail.desy.de'
 mo = False
-number = 100
+number = 20 #100
+test = False
 
 # for shapeFitter, computeCorr, integrateResiduals
 switchConfignummodel = False
 configs = [
-    # '6868_second_verytight',
-    # '6868_second_extratight',
-    '6868_first',
+    '6868_rereco_second',
+    '6868_rereco_second_verytight',
+    '6868_rereco_second_drift1',
+    '6868_rereco_second_drift2',
 ]
 modelversion = [
     ('SupDG', 'v4'),
@@ -37,7 +39,7 @@ def shapeFitter(config, i, model, bcid, json, version):
     names = ['sF'] + config.split('_') + [str(i), model, version]
     submit(
         'res/jobs/shapeFitter_{0}.sh'.format(version), args=args, names=names,
-        ma=ma, mo=mo, rt=5
+        ma=ma, mo=mo, rt=5, test=test
     )
 
 def computeCorr(config, i, model, bcid, json, version):
@@ -91,7 +93,7 @@ for arg in argv[1:]:
                 for model, version in modelversion:
                     if version != arg[-2:]:
                         continue
-                    for j in range(number):
+                    for j in range(10, 10+number):
                         if j == 5:
                             mymo = False
                         args = [json, str(bcid), model, str(j)]

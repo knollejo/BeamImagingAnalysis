@@ -115,7 +115,7 @@ class QSubmitter(JobSubmitter):
         return '-N {0}'.format(name)
 
     def job(self, job):
-        return ' '.join(job)
+        return '"{0}"'.format(' '.join(job))
 
     def vmem(self, mem):
         return '-l h_vmem="{0}"'.format(mem)
