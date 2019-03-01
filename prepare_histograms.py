@@ -71,13 +71,15 @@ def prepare_histograms(
             histograms.append(hist)
         if not singlepair or not scan.startswith('2'):
             condition = 'vtx_nTrk>={0}'.format(mintrk)
-            errx = TH1F('errx', 'errx', 100, 0.0, 0.03)
-            erry = TH1F('erry', 'erry', 100, 0.0, 0.03)
+            errx = TH1F('errx', '', 100, 0.0, 0.03)
+            erry = TH1F('erry', '', 100, 0.0, 0.03)
             for tree in trees.itervalues():
                 tree.Draw('vtx_xError>>+errx', condition, 'goff')
                 tree.Draw('vtx_yError>>+erry', condition, 'goff')
             xerror.Add(errx)
             yerror.Add(erry)
+            errx.Delete()
+            erry.Delete()
     output = {
         'fill': fill,
         'name': '{0}_{1}'.format(name, suffix),

@@ -5,7 +5,7 @@
     "vtxresy": 0.002639,
     "vtxresx": 0.002574,
     "nbins": 760,
-    "name": "Fill6868_rereco_second_drift1",
+    "name": "Fill6868_rereco_second_driftpos",
     "datapath": "/afs/cern.ch/work/j/joknolle/public/beamimaging",
     "heavyion": false,
     "bcids": [

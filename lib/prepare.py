@@ -187,12 +187,8 @@ def make_vdmhistos(
         name = 'hist_{0}'.format(tree.GetName())
         condition = 'vtx_nTrk>={0}'.format(mintrk)#' && scanstep>=2'
 
-        if 'MoveX' in name:
-            draw1 = '(vtx_y{2:+f}*scanstep)/{0}:(vtx_x{1:+f}*scanstep)/{0}>>hnew{3}' \
-                    .format(scaling, -1.0*stepsize[0], -1.0*stepsize[1], i)
-        else:
-            draw1 = '(vtx_y{2:+f}*scanstep)/{0}:(vtx_x{1:+f}*scanstep)/{0}>>hnew{3}' \
-                    .format(scaling, -1.0*stepsize[0], -1.0*stepsize[1], i)
+        draw1 = '(vtx_y{2:+.8f}*scanstep)/{0}:(vtx_x{1:+.8f}*scanstep)/{0}>>hnew{3}' \
+                .format(scaling, -1.0*stepsize[0], -1.0*stepsize[1], i)
         n = tree.Draw(draw1, condition, 'goff')
         hist1 = gDirectory.Get('hnew{0}'.format(i))
 
@@ -201,12 +197,8 @@ def make_vdmhistos(
         if verbose:
             print '<<< {0} entries with offset {1}, {2}'.format(n, offx, offy)
 
-        if 'MoveX' in name:
-            draw2 = '(vtx_y)/{0}{1:+f}:(vtx_x{2:+f}*scanstep)/{0}{3:+f}>>{4}' \
-                    .format(scaling, -1.0*offy, -1.0*stepsize[0], -1.0*offx, name)
-        else:
-            draw2 = '(vtx_y{0:+f}*scanstep)/{1}{2:+f}:(vtx_x)/{1}{3:+f}>>{4}' \
-                    .format(-1.0*stepsize[1], scaling, -1.0*offy, -1.0*offx, name)
+        draw2 = '(vtx_y{2:+.8f}*scanstep)/{0}{4:+f}:(vtx_x{1:+.8f}*scanstep)/{0}{3:+f}>>{5}' \
+                .format(scaling, -1.0*stepsize[0], -1.0*stepsize[1], -1.0*offx, -1.0*offy, name)
         hist2 = TH2F(
             name, name, nbins, crange[0], crange[1], nbins, crange[0], crange[1]
         )
